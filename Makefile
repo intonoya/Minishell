@@ -5,37 +5,41 @@
 #                                                     +:+ +:+         +:+      #
 #    By: intonoya <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/18 16:15:42 by intonoya          #+#    #+#              #
-#    Updated: 2023/01/18 16:17:09 by intonoya         ###   ########.fr        #
+#    Created: 2023/02/08 21:01:17 by intonoya          #+#    #+#              #
+#    Updated: 2023/02/08 21:06:36 by intonoya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+LIBFT	= libft/libft.a
+NAME	= minishell
+SRCS	= $(wildcard ./srcs/*.c)
+OBJS	= $(SRCS:.c=.o)
+CFLAGS	= -Wall -Wextra -Werror -I./readline_installed/include -I./brew/opt/readline_installed/include
+LINKER	= -L./readline_installed/lib -lreadline
+CC		= cc
+RD		= ${shell find ${HOME} -name readline_installed 2>/dev/null}
+RM		= rm -f
 
-LIBFT	=	libft/libft.a
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-NAME	=	minishell
-
-SRCS	=	$(wildcard *.c)
-
-CC	=	gcc
-
-FLAGS	=	-c -Wall -Wextra -Werror
-
-OBJS	=	$(SRCS:.c=.o)
+all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(MAKE) -C libft
-	cp libft/libft.a $(NAME)
-	$(CC) $(FLAGS) $(SRCS)
-	ar -rcs $(NAME) $(OBJS)
+		 $(MAKE) -C libft
+		 cp libft/libft.a $(NAME)
+		 $(CC) $(CFLAGS) $(LINKER) $(OBJS) -o $(NAME) 
 
-all : $(NAME)
-
-clean :
+clean:
 	$(MAKE) clean -C libft
 	rm -rf $(OBJS)
 
-fclean : clean
+fclean: clean
 	$(MAKE) fclean -C libft
 	rm -rf $(NAME)
 
-re : fclean all
+install:
+	cd readline-8.1 && make clean && ./configure --prefix=${RD} && make && make install
+
+re: fclean all
+
+.PHONY: all clean fclean re
