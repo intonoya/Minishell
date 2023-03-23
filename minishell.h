@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: intonoya <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 16:11:49 by intonoya          #+#    #+#             */
-/*   Updated: 2023/01/18 16:14:03 by intonoya         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef	MINISHELL_H
 # define MIISHELL_H
 
@@ -31,5 +19,42 @@
 # include <dirent.h> 
 # include <sys/ioctl.h>
 
+typedef struct s_var
+{
+	char			*name;
+	char			*value;
+	char			meaning;
+	int				status;
+	struct s_var	*next;
+}					t_var;
+
+typedef struct s_token
+{
+	char			type;
+	char			*value;
+	char			*quote;
+	struct s_token	*next;
+}					t_token;
+
+typedef struct s_command
+{
+	int					id;
+	char				**args;
+	char				*path;
+	int					path_error;
+	char				*oper;
+	char				*oper_value;
+	char				delimitor;
+	int					builtin;
+	int					std_in;
+	int					std_in_dup1;
+	int					std_out;
+	int					std_out_dup1;
+	int					std_err;
+	int					pipe;
+	int					pipe_out;
+	int					pipe_in;
+	struct s_command	*next;
+}						t_command;
 
 #endif
