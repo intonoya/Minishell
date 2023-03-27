@@ -25,7 +25,7 @@ int	pwd(t_var **env_lst)
 		if (get_from_env(*env_lst) == 0)
 		{
 			errno = 127;
-			change_status(env_lst, 2);
+			change_the_status(env_lst, 2);
 			perror("pwd");
 			return (2);
 		}
@@ -36,7 +36,7 @@ int	pwd(t_var **env_lst)
 		ft_putstr_fd(dir, 1);
 		ft_putchar_fd('\n', 1);
 		free(dir);
-		change_status(env_lst, 0);
+		change_the_status(env_lst, 0);
 		return (0);
 	}
 }

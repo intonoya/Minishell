@@ -15,13 +15,13 @@ int	env(t_var **env_lst)
 	if (envp[i] == 0)
 	{
 		arr_free(envp);
-		change_status(env_lst, 0);
+		change_the_status(env_lst, 0);
 		return (0);
 	}
 	else
 	{
 		arr_free(envp);
-		change_status(env_lst, 127);
+		change_the_status(env_lst, 127);
 		return (2);
 	}
 }

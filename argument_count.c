@@ -40,7 +40,7 @@ static void	arg_to_array(t_token **tokens, t_command *command)
 	}
 }
 
-int	arg_count(t_token **tokens, t_command *command)
+int	argument_count(t_token **tokens, t_command *command)
 {
 	int		count;
 	t_token	*tmp;

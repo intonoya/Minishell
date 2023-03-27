@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-#include "minishell.h"
-
 static void	print_error(char *str)
 {
 	char	*tmp;
@@ -31,7 +29,7 @@ int	check_the_var_name(char *str, int *res, t_var **env_lst)
 		else
 		{
 			print_error(str);
-			change_status(env_lst, 1);
+			change_the_status(env_lst, 1);
 			*res = 1;
 			return (1);
 		}

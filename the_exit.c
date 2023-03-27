@@ -57,7 +57,7 @@ static void	run_exit(t_var *env_lst)
 	env_lst->value = ft_strdup("exit");
 }
 
-int	my_exit(t_command *command, t_var **env_lst)
+int	the_exit(t_command *command, t_var **env_lst)
 {
 	int	res;
 	int	k;
@@ -72,10 +72,10 @@ int	my_exit(t_command *command, t_var **env_lst)
 		{
 			ft_putstr_fd("exit\n", 2);
 			ft_putstr_fd("Minishell: exit: too many arguments\n", 2);
-			change_status(env_lst, 1);
+			change_the_status(env_lst, 1);
 			return (2);
 		}
-		change_status(env_lst, res);
+		change_the_status(env_lst, res);
 		run_exit(*env_lst);
 	}
 	else

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	check_flag(char *str, int *n)
+static int	check_the_flag(char *str, int *n)
 {
 	int	i;
 
@@ -48,12 +48,12 @@ int	echo(t_command *command, t_var **env_lst)
 	else
 	{
 		i = 0;
-		while (command->args[++i] != 0 && check_flag(command->args[i], &n) == 1)
+		while (command->args[++i] != 0 && check_the_flag(command->args[i], &n) == 1)
 			;
 		echo_print(command, &i);
 		if (n == 0)
 			ft_putchar_fd('\n', 1);
 	}
-	change_status(env_lst, 0);
+	change_the_status(env_lst, 0);
 	return (0);
 }
