@@ -1,34 +1,62 @@
-LIBFT	= libft/libft.a
-NAME	= minishell
-SRCS	= $(wildcard ./srcs/*.c)
-OBJS	= $(SRCS:.c=.o)
-CFLAGS	= -Wall -Wextra -Werror -I./readline_installed/include -I./brew/opt/readline_installed/include
-LINKER	= -L./readline_installed/lib -lreadline
-CC		= cc
-RD		= ${shell find ${HOME} -name readline_installed 2>/dev/null}
-RM		= rm -f
+NAME = minishell
 
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+PREFIX = $(shell find ${HOME} -name readline-intonoya 2>/dev/null)
+
+CC = cc
+
+RM = rm -rf
+
+FLAGS = -Wall -Wextra -Werror
+
+MKDIR = mkdir -p
+
+OBJS_DIR = OBJS
+
+SRCS = $(wildcard *.c) $(wildcard builtins/*.c)  $(wildcard parsing/*.c)  \
+$(wildcard signals/*.c)  $(wildcard redirections/*.c)  $(wildcard utils/*.c)
+
+_OBJS = $(patsubst %.c, %.o, $(SRCS))
+
+OBJS = $(patsubst %.o, $(OBJS_DIR)/%.o, $(_OBJS))
+
+INCLUDES = -I./readline-intonoya/include
+
+LINKERS	= -L./readline-intonoya/lib -lreadline
+
+$(OBJS_DIR)/%.o: %.c
+	@ $(MKDIR) $(OBJS_DIR)/builtins
+	@ $(MKDIR) $(OBJS_DIR)/parsing
+	@ $(MKDIR) $(OBJS_DIR)/redirections
+	@ $(MKDIR) $(OBJS_DIR)/utils
+	@ $(MKDIR) $(OBJS_DIR)/signals
+	@$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-		 $(MAKE) -C libft
-		 cp libft/libft.a $(NAME)
-		 $(CC) $(CFLAGS) $(LINKER) $(OBJS) -o $(NAME) 
+	$(NONE)
+	@$(CC) $(FLAGS) $(OBJS) $(LINKERS) $(INCLUDES) -o $(NAME)
+	$(NONE)
 
 clean:
-	$(MAKE) clean -C libft
-	rm -rf $(OBJS)
+	$(NONE)
+	@ $(RM) $(OBJS_DIR)
 
 fclean: clean
-	$(MAKE) fclean -C libft
-	rm -rf $(NAME)
-
-install:
-	cd readline-8.1 && make clean && ./configure --prefix=${RD} && make && make install
+	$(NONE)
+	@ $(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+readline:
+	cd readline-master && make clean && ./configure --prefix=$(PREFIX) && make && make install
+
+norm:
+	clear
+	norminette $(SRCS) minishell.h
+
+wc:
+	clear
+	wc -l $(SRCS)
+
+.PHONY: all clean fclean re readline norm wc
